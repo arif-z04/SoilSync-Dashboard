@@ -1,0 +1,19 @@
+'use client';
+
+import { ToastContainer } from 'react-toastify';
+
+export function ToastProvider() {
+  return (
+    <ToastContainer
+      position="top-right"
+      autoClose={2600}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      pauseOnHover
+      draggable
+      theme="colored"
+      toastStyle={{ borderRadius: '12px' }}
+    />
+  );
+}
