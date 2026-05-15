@@ -70,9 +70,9 @@ async function flushBuffer() {
   }
 }
 
-// Flush every 10 seconds
+// Flush every 5 seconds
 setInterval(() => {
   void flushBuffer();
-}, 10000);
+}, 5000);
 
 export default { pushPacket, flushBuffer };
