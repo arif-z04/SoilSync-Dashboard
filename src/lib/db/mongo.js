@@ -52,11 +52,51 @@ export function deserializePayload(payload) {
 
   if (typeof payload === 'string') {
     try {
-      return JSON.parse(payload);
+      return normalizePayload(JSON.parse(payload));
     } catch {
       return null;
     }
   }
 
-  return payload;
+  return normalizePayload(payload);
+}
+
+function normalizePayload(payload) {
+  if (!payload || typeof payload !== 'object') {
+    return payload;
+  }
+
+  const normalizedPayload = { ...payload };
+
+  if ('timestamp' in normalizedPayload) {
+    normalizedPayload.timestamp = normalizeTimestampValue(normalizedPayload.timestamp);
+  }
+
+  if ('serverReceivedAt' in normalizedPayload) {
+    normalizedPayload.serverReceivedAt =
+      normalizeTimestampValue(normalizedPayload.serverReceivedAt) ??
+      normalizedPayload.serverReceivedAt;
+  }
+
+  return normalizedPayload;
+}
+
+function normalizeTimestampValue(timestamp) {
+  if (timestamp == null || timestamp === '') return null;
+
+  if (timestamp instanceof Date) {
+    const time = timestamp.getTime();
+    return Number.isNaN(time) ? null : time;
+  }
+
+  const numericTimestamp = Number(timestamp);
+
+  if (Number.isFinite(numericTimestamp) && numericTimestamp > 0) {
+    return numericTimestamp < 1e12 ? numericTimestamp * 1000 : numericTimestamp;
+  }
+
+  const parsedTimestamp = Date.parse(timestamp);
+  return Number.isFinite(parsedTimestamp) && parsedTimestamp > 0
+    ? parsedTimestamp
+    : null;
 }

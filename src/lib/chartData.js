@@ -1,23 +1,25 @@
+import { normalizeTimestamp } from './utils.js';
+
 export const formatChartData = (history) => {
   const filtered = (history || [])
     .filter(Boolean)
     .slice()
     .sort((left, right) => {
-      const leftTime = left.timestamp ? new Date(left.timestamp).getTime() : 0;
-      const rightTime = right.timestamp ? new Date(right.timestamp).getTime() : 0;
+      const leftTime = normalizeTimestamp(left.timestamp) ?? 0;
+      const rightTime = normalizeTimestamp(right.timestamp) ?? 0;
 
       return leftTime - rightTime;
     });
 
   return filtered.map((item, index) => ({
-    time: item.timestamp
+    time: normalizeTimestamp(item.timestamp)
       ? new Intl.DateTimeFormat('en-US', {
           timeZone: 'Asia/Dhaka',
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
           hour12: false,
-        }).format(new Date(item.timestamp))
+        }).format(new Date(normalizeTimestamp(item.timestamp)))
       : String(index),
     soilPercent: Number(item.soilPercent ?? 0),
     soilRaw: Number(item.soilRaw ?? 0),
@@ -66,6 +68,9 @@ export const getStatusBadgeColor = (status) => {
   }
 };
 
-export const formatTime = (timestamp) => {
-  return new Date(timestamp).toLocaleTimeString();
+export const formatTime = (timestamp, fallback = 'No time') => {
+  const normalizedTimestamp = normalizeTimestamp(timestamp);
+  if (normalizedTimestamp === null) return fallback;
+
+  return new Date(normalizedTimestamp).toLocaleTimeString();
 };

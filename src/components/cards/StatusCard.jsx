@@ -1,18 +1,10 @@
 'use client';
 
 import { Activity } from 'lucide-react';
+import { formatTime } from '@/lib/utils';
 
 export function StatusCard({ data }) {
   if (!data) return null;
-
-  const formatTime = (ts) => {
-    const date = new Date(ts);
-    return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all duration-300">
@@ -36,7 +28,7 @@ export function StatusCard({ data }) {
           Sync Time
         </p>
         <div className="text-2xl font-bold text-slate-900 tracking-tight">
-          {formatTime(data.timestamp)}
+          {formatTime(data.timestamp, '--:--:--')}
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Leaf, Loader2, Wifi, WifiOff, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { formatTime } from '@/lib/utils';
 
 export function Header({ data, loading, connected, onClearAll }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,8 +14,7 @@ export function Header({ data, loading, connected, onClearAll }) {
   const pathname = usePathname();
   const isConnected =
     typeof connected === 'boolean' ? connected : data !== null;
-  const formatTimestamp = (ts) =>
-    ts ? new Date(ts).toLocaleTimeString() : '--:--:--';
+  const formatTimestamp = (ts) => formatTime(ts, '--:--:--');
   const formatBangladeshTime = () =>
     new Intl.DateTimeFormat('en-US', {
       timeZone: 'Asia/Dhaka',
