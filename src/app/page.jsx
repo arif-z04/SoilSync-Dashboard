@@ -32,8 +32,7 @@ export default function Dashboard() {
               Real-time Monitoring Dashboard
             </h2>
             <p className="text-lg text-slate-600 font-medium">
-              Live data from your IoT sensors at your fingertips. Professional,
-              minimal, and fully responsive.
+              Live data from Arduino Nano Via LoRa SX1278.
             </p>
           </div>
 
